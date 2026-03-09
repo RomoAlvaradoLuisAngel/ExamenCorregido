@@ -2,7 +2,6 @@
 import flet as ft
 def main(page: ft.Page):
     page.title="Examen final - Registro de estudiantes"
-    page.vertical_alignment=ft.MainAxisAlignment.CENTER
     page.add(ft.Text(value="Registro de participantes", size=25, italic=False, text_align=ft.TextAlign.CENTER))
     
     nombre = ft.TextField(
@@ -19,9 +18,8 @@ def main(page: ft.Page):
         color=ft.Colors.BLUE,
     )
     
-    page.add(ft.Text("--Taller de interes--"))
     taller = ft.Dropdown(
-        value="Taller",
+        label="Taller",
         options=[
             ft.DropdownOption(key="principiantes", text="Python para principiantes."),
             ft.DropdownOption(key="intermedio", text="Flet intermedio."),
@@ -29,7 +27,6 @@ def main(page: ft.Page):
         ],
     )
     
-    page.add(ft.Text("--Modalidad de pago--"))
     pago = ft.RadioGroup(
         content=ft.Row([
             ft.Radio(value="completo", label="Pago completo"),
@@ -37,7 +34,6 @@ def main(page: ft.Page):
         ])
     )
     
-    page.add(ft.Text("--Requiere computadora portatil--"))
     requerimientos = ft.Checkbox(
         label="Si",
         value=False,
@@ -45,54 +41,53 @@ def main(page: ft.Page):
         fill_color=ft.Colors.GREEN
     )
     
-    page.add(ft.Text("--Nivel de experiencia--"))
     experiencia = ft.Slider(
         value= 1,
         min=0,
         max=5,
         divisions=5
     )
+    resultado = ft.Text("")
+    
+    def mostrar_resumen(e):
+        resultado.value=(
+        "Nombre completo: " + nombre.value + "\n"
+        "Correo electronico: " + correo.value + "\n"
+        "Taller: " + str(taller.value) + "\n"
+        "Pago: " + str(pago.value) + "\n"
+        "Requerimientos: " + str(requerimientos.value) + "\n"
+        "Experiencia: " + str(experiencia.value) + "\n"
+        )
+        page.update()
+        
+    boton=ft.ElevatedButton(
+        content=ft.Text("Mostrar ficha del participante"),
+        icon=ft.Icons.SAVE,
+        color=ft.Colors.BLUE,
+        on_click=mostrar_resumen
+    )
     
     page.add(ft.Column(
     width=220,
-    height=120,
     spacing=12,
     controls=[
-        ft.Text(nombre),
-        ft.Text(correo),
-        ft.Text(taller),
-        ft.Text(pago),
-        ft.Text(requerimientos),
-        ft.Text(experiencia)
+        ft.Text("--Nombre completo--"),
+        nombre,
+        ft.Text("--Correo electronico--"),
+        correo,
+        ft.Text("--Taller--"),
+        taller,
+        ft.Text("--Modalidad de pago--"),
+        pago,
+        ft.Text("--Requiere una laptop?--"),
+        requerimientos,
+        ft.Text("--Nivel de experiencia--"),
+        experiencia,
+        boton,
+        ft.Text("--Ficha del participante--"),
+        resultado,
+        ft.Text("--Gracias por su registro--")
     ],
 ))
-    
-    mostrar_resumen=ft.ElevatedButton(
-        content="Mostrar ficha del participante",
-        icon=ft.Icons.SAVE,
-        color=ft.Colors.BLUE,
-        on_click=lambda e: print("Click!")
-    )
-    
-    
-    ft.Divider(height=10, thickness=2, color=ft.Colors.GREY_400)
-    ft.VerticalDivider(width=10, thickness=2, color=ft.Colors.GREY_400)
-    
-
-    page.add(ft.Text("--Ficha del participante--"))
-    
-    def mostrar_resumen(e):
-        ft.Text("Nombre completo: " + nombre.value + "\n",
-        "Correo electronico: " + correo.value + "\n",
-        "Taller: " + taller.value + "\n",
-        "Pago: " + pago.value + "\n",
-        "Requerimientos: " + requerimientos.value + "\n",
-        "Experiencia: " + experiencia.value + "\n",
-        )
-        page.update()
-    page.add(mostrar_resumen)
-    
-
-    page.add(ft.Text("--Gracias por su registro--"))
 
 ft.run(main)
